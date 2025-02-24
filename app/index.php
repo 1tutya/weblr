@@ -4,32 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LR2</title>
-    <style>
-        #output {
-            margin-top: 20px;
-            white-space: pre-wrap;
-            background: #f4f4f4;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Введите данные об автомобиле</h1>
 
-    <form action="form.php" method="POST">
+    <form id="carForm" action="form.php" method="POST" onsubmit="return validateForm()">
         <label for="name">ФИО</label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" required>
+        <div id="nameError" class="error"></div>
+
         <label for="brand">Марка автомобиля</label>
-        <input type="text" name="brand" id="brand">
+        <input type="text" name="brand" id="brand" required>
+        <div id="brandError" class="error"></div>
+
         <label for="model">Модель автомобиля</label>
-        <input type="text" name="model" id="model">
+        <input type="text" name="model" id="model" required>
+        <div id="modelError" class="error"></div>
+
         <label for="year">Год производства</label>
-        <input type="text" name="year" id="year">
+        <input type="number" name="year" id="year" required>
+        <div id="yearError" class="error"></div>
+
         <label for="mileage">Пробег</label>
-        <input type="text" name="mileage" id="mileage">
+        <input type="number" name="mileage" id="mileage" required>
+        <div id="mileageError" class="error"></div>
+
         <label for="price">Цена</label>
-        <input type="text" name="price" id="price">
+        <input type="number" name="price" id="price" required>
+        <div id="priceError" class="error"></div>
+
         <input type="submit" value="Отправить">
     </form>
 
@@ -48,5 +52,7 @@
             <pre><?php echo htmlspecialchars($_GET['data']); ?></pre>
         </div>
     <?php endif; ?>
+
+    <script src="script.js"></script>
 </body>
 </html>
