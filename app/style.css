@@ -67,3 +67,7 @@ button:hover {
     margin-top: -10px;
     margin-bottom: 10px;
 }
+
+.invalid {
+    border-color: red !important;
+}

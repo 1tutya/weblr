@@ -2,21 +2,46 @@
 $csvFile = 'data.csv';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
     $brand = trim($_POST['brand'] ?? '');
     $model = trim($_POST['model'] ?? '');
     $year = trim($_POST['year'] ?? '');
     $mileage = trim($_POST['mileage'] ?? '');
     $price = trim($_POST['price'] ?? '');
 
-    $dataRow = [$name, $brand, $model, $year, $mileage, $price];
+    $errors = [];
 
-    if (($file = fopen($csvFile, 'a')) !== false) {
-        fputcsv($file, $dataRow);
-        fclose($file);
-        $message = 'Данные успешно сохранены!';
+    if (empty($brand)) {
+        $errors[] = 'Марка автомобиля обязательна.';
+    }
+
+    if (empty($model)) {
+        $errors[] = 'Модель автомобиля обязательна.';
+    }
+
+    if (!is_numeric($year) || $year < 1960 || $year > 2025) {
+        $errors[] = 'Год производства должен быть числом между 1960 и 2025.';
+    }
+
+    if (!is_numeric($mileage) || $mileage < 0) {
+        $errors[] = 'Пробег должен быть неотрицательным числом.';
+    }
+
+    if (!is_numeric($price) || $price < 0) {
+        $errors[] = 'Цена должна быть неотрицательным числом.';
+    }
+
+    if (empty($errors)) {
+        $dataRow = [$brand, $model, $year, $mileage, $price];
+
+        if (($file = fopen($csvFile, 'a')) !== false) {
+            fputcsv($file, $dataRow);
+            fclose($file);
+            $message = 'Данные успешно сохранены!';
+        } else {
+            $message = 'Ошибка при сохранении данных.';
+        }
     } else {
-        $message = 'Ошибка при сохранении данных.';
+        $message = 'Ошибки в данных: ' . implode(' ', $errors);
     }
 
     header("Location: index.php?message=" . urlencode($message));

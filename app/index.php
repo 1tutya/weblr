@@ -10,9 +10,6 @@
     <h1>Введите данные об автомобиле</h1>
 
     <form id="carForm" action="form.php" method="POST" onsubmit="return validateForm()">
-        <label for="name">ФИО</label>
-        <input type="text" name="name" id="name" required>
-        <div id="nameError" class="error"></div>
 
         <label for="brand">Марка автомобиля</label>
         <input type="text" name="brand" id="brand" required>

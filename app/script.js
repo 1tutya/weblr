@@ -1,59 +1,104 @@
-function validateForm() {
-    let isValid = true;
+document.addEventListener('DOMContentLoaded', function() {
+    const brandInput = document.getElementById('brand');
+    const modelInput = document.getElementById('model');
+    const yearInput = document.getElementById('year');
+    const mileageInput = document.getElementById('mileage');
+    const priceInput = document.getElementById('price');
 
-    const name = document.getElementById('name').value;
-    const nameError = document.getElementById('nameError');
-    if (!/^[А-Яа-яЁё\s]+$/.test(name)) {
-        nameError.textContent = 'ФИО должно содержать только русские буквы и пробелы.';
-        isValid = false;
-    } else {
-        nameError.textContent = '';
+    brandInput.addEventListener('input', validateBrand);
+    modelInput.addEventListener('input', validateModel);
+    yearInput.addEventListener('input', validateYear);
+    mileageInput.addEventListener('input', validateMileage);
+    priceInput.addEventListener('input', validatePrice);
+
+    brandInput.addEventListener('blur', validateBrand);
+    modelInput.addEventListener('blur', validateModel);
+    yearInput.addEventListener('blur', validateYear);
+    mileageInput.addEventListener('blur', validateMileage);
+    priceInput.addEventListener('blur', validatePrice);
+
+    function validateBrand() {
+        const brand = brandInput.value;
+        const brandError = document.getElementById('brandError');
+        if (brand.trim() === '') {
+            brandError.textContent = 'Марка автомобиля обязательна.';
+            brandInput.classList.add('invalid');
+            return false;
+        } else if (/\d/.test(brand)) {
+            brandError.textContent = 'Марка автомобиля не должна содержать цифр.';
+            brandInput.classList.add('invalid');
+            return false;
+        }
+        else {
+            brandError.textContent = '';
+            brandInput.classList.remove('invalid');
+            return true;
+        }
     }
 
-    const brand = document.getElementById('brand').value;
-    const brandError = document.getElementById('brandError');
-    if (brand.trim() === '') {
-        brandError.textContent = 'Марка автомобиля обязательна.';
-        isValid = false;
-    } else {
-        brandError.textContent = '';
+    function validateModel() {
+        const model = modelInput.value;
+        const modelError = document.getElementById('modelError');
+        if (model.trim() === '') {
+            modelError.textContent = 'Модель автомобиля обязательна.';
+            modelInput.classList.add('invalid');
+            return false;
+        } else {
+            modelError.textContent = '';
+            modelInput.classList.remove('invalid');
+            return true;
+        }
     }
 
-    const model = document.getElementById('model').value;
-    const modelError = document.getElementById('modelError');
-    if (model.trim() === '') {
-        modelError.textContent = 'Модель автомобиля обязательна.';
-        isValid = false;
-    } else {
-        modelError.textContent = '';
+    function validateYear() {
+        const year = yearInput.value;
+        const yearError = document.getElementById('yearError');
+        if (year < 1960 || year > 2025 || isNaN(year)) {
+            yearError.textContent = 'Год производства должен быть числом между 1960 и 2025.';
+            yearInput.classList.add('invalid');
+            return false;
+        } else {
+            yearError.textContent = '';
+            yearInput.classList.remove('invalid');
+            return true;
+        }
     }
 
-    const year = document.getElementById('year').value;
-    const yearError = document.getElementById('yearError');
-    if (year < 1960 || year > 2025) {
-        yearError.textContent = 'Год производства должен быть между 1960 и 2025.';
-        isValid = false;
-    } else {
-        yearError.textContent = '';
+    function validateMileage() {
+        const mileage = mileageInput.value;
+        const mileageError = document.getElementById('mileageError');
+        if (mileage < 0 || isNaN(mileage)) {
+            mileageError.textContent = 'Пробег должен быть неотрицательным числом.';
+            mileageInput.classList.add('invalid');
+            return false;
+        } else {
+            mileageError.textContent = '';
+            mileageInput.classList.remove('invalid');
+            return true;
+        }
     }
 
-    const mileage = document.getElementById('mileage').value;
-    const mileageError = document.getElementById('mileageError');
-    if (mileage < 0) {
-        mileageError.textContent = 'Пробег не может быть отрицательным.';
-        isValid = false;
-    } else {
-        mileageError.textContent = '';
+    function validatePrice() {
+        const price = priceInput.value;
+        const priceError = document.getElementById('priceError');
+        if (price < 0 || isNaN(price)) {
+            priceError.textContent = 'Цена должна быть неотрицательным числом.';
+            priceInput.classList.add('invalid');
+            return false;
+        } else {
+            priceError.textContent = '';
+            priceInput.classList.remove('invalid');
+            return true;
+        }
     }
 
-    const price = document.getElementById('price').value;
-    const priceError = document.getElementById('priceError');
-    if (price < 0) {
-        priceError.textContent = 'Цена не может быть отрицательной.';
-        isValid = false;
-    } else {
-        priceError.textContent = '';
-    }
+    window.validateForm = function() {
+        const isBrandValid = validateBrand();
+        const isModelValid = validateModel();
+        const isYearValid = validateYear();
+        const isMileageValid = validateMileage();
+        const isPriceValid = validatePrice();
 
-    return isValid;
-}
+        return isBrandValid && isModelValid && isYearValid && isMileageValid && isPriceValid;
+    };
+});
